@@ -1,4 +1,4 @@
-var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2020-10-08&endtime=2020-10-15&minmagnitude=2";
+var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2020-10-10&endtime=2020-10-15";
 
 var myMap = L.map("mapid", {
   center: [
