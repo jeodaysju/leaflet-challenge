@@ -25,19 +25,47 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: API_KEY
 }).addTo(myMap);
 
-d3.json(queryUrl).then(function(data) {
+function chooseColor(depth) {
 
-  L.geoJSON(data, 
+  if (-10 <= depth && depth <= 10)
+    return "lightyellow";
+  else if (10 < depth && depth <= 30)
+    return "yellow";
+  else if (30 < depth && depth <= 50)
+    return "lightgreen";
+  else if (50 < depth && depth <= 70)
+    return "green";
+  else if (70 < depth && depth <= 90)
+    return "darkorange";
+  else if (depth > 90)
+    return "red";
+  else
+    return "black";
+}
+
+function scaledRadius(latitude, initialRadius)
+{
+  const radiusOfEarth = 6378137;
+  latitude = latitude / 180 * Math.PI;
+  const cosLat = Math.cos(latitude);
+  const sinLat = Math.sin(latitude);
+  return radiusOfEarth * Math.acos(Math.cos(initialRadius / radiusOfEarth) * cosLat * cosLat + sinLat * sinLat);
+}
+
+
+d3.json(queryUrl).then(function (data) {
+
+  L.geoJSON(data,
     {
-      pointToLayer: function (feature, latlng) 
-      {
-        return L.circleMarker(latlng, 
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng,
           {
-            radius: feature.properties.mag*5,
-            fillColor: "red",
+            // radius: scaledRadius(feature.geometry.coordinates[1], feature.properties.mag * 5),
+            radius: feature.properties.mag * 5,
+            fillColor: chooseColor(feature.geometry.coordinates[2]),
             color: "#000",
             weight: 1,
-            fillOpacity: 1 - (1/ feature.geometry.coordinates[2])
+            fillOpacity: 1
           });
       }
     }).addTo(myMap);
