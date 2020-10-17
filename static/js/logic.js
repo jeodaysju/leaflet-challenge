@@ -7,6 +7,14 @@ var myMap = L.map("mapid", {
   zoom: 5,
 });
 
+function markerSize(magnitude) {
+  return magnitude / 40;
+}
+
+function opacityShade(depth) {
+  return depth / 40;
+}
+
 // Adding tile layer
 L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
@@ -17,20 +25,29 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: API_KEY
 }).addTo(myMap);
 
-var geojsonMarkerOptions = {
-  radius: 8,
-  fillColor: "#ff7800",
-  color: "#000",
-  weight: 1,
-  opacity: 1,
-  fillOpacity: 0.8
-};
-
 d3.json(queryUrl).then(function(data) {
-  L.geoJSON(data, {
-    pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
-    }
-  }).addTo(myMap);
+
+  // var geojsonMarkerOptions = {
+  //   radius: 8,
+  //   fillColor: "#ff7800",
+  //   color: "#000",
+  //   weight: 1,
+  //   fillOpacity: 0.8
+  // };
+
+  L.geoJSON(data, 
+    {
+      pointToLayer: function (feature, latlng) 
+      {
+        return L.circleMarker(latlng, 
+          {
+            radius: feature.properties.mag*5,
+            fillColor: "#ff7800",
+            color: "#000",
+            weight: 1,
+            fillOpacity: 0.8
+          });
+      }
+    }).addTo(myMap);
 });
 
