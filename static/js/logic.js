@@ -27,14 +27,6 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 d3.json(queryUrl).then(function(data) {
 
-  // var geojsonMarkerOptions = {
-  //   radius: 8,
-  //   fillColor: "#ff7800",
-  //   color: "#000",
-  //   weight: 1,
-  //   fillOpacity: 0.8
-  // };
-
   L.geoJSON(data, 
     {
       pointToLayer: function (feature, latlng) 
@@ -42,10 +34,10 @@ d3.json(queryUrl).then(function(data) {
         return L.circleMarker(latlng, 
           {
             radius: feature.properties.mag*5,
-            fillColor: "#ff7800",
+            fillColor: "red",
             color: "#000",
             weight: 1,
-            fillOpacity: 0.8
+            fillOpacity: 1 - (1/ feature.geometry.coordinates[2])
           });
       }
     }).addTo(myMap);
