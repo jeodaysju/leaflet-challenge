@@ -8,3 +8,27 @@ body,
 html {
   height: 100%;
 }
+
+.legend .small {
+  color: lightyellow;
+}
+
+.legend .sm_med {
+  color: yellow;
+}
+
+.legend .medium {
+  color: lightgreen;
+}
+
+.legend .med_lg {
+  color: green;
+}
+
+.legend .large {
+  color: darkorange;
+}
+
+.legend .xtra_large {
+  color: red;
+}
